@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Http\Resources\ErrorResource;
 use Exception;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -45,6 +46,24 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        
+        
+
+        if($exception instanceof ValidationException){ 
+            $errors='';
+            foreach($exception->errors() as $key => $value) {
+                $errors .= $value[0];
+            }
+
+            return  (new ErrorResource((object)[
+                'title'=>'Validation Failed',
+                'code'=>'422',
+                'details'=>$errors
+            ]))->response()
+            ->setStatusCode(422);
+             
+        }
+
         return parent::render($request, $exception);
     }
 }
