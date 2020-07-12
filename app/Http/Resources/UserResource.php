@@ -11,10 +11,8 @@ class UserResource extends JsonResource
 
     public function __construct($resource, $token)
     {
-        // Ensure you call the parent constructor
         parent::__construct($resource);
         $this->resource = $resource;
-
         $this->token = $token;
     }
 

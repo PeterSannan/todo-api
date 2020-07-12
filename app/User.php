@@ -19,9 +19,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      *
      * @var array
      */
-    protected $fillable = [
-        'name', 'email',
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -52,5 +50,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+
+    public function categories(){
+        return $this->hasMany(Category::class,'user_id','id');
     }
 }

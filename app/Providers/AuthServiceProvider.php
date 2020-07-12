@@ -35,5 +35,9 @@ class AuthServiceProvider extends ServiceProvider
                 return User::where('api_token', $request->input('api_token'))->first();
             }
         });
+
+        Gate::define('manage-category',function($user,$category){
+            return $user->id == $category->user_id;
+        });
     }
 }

@@ -18,5 +18,13 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post('register', 'AuthController@register');
 
     $router->post('logout', 'AuthController@logout');
+
+    $router->group(['prefix' => 'categories'], function () use ($router) { 
+        $router->get('/','CategoriesController@index');
+        $router->post('/','CategoriesController@store');
+        $router->delete('/{category}','CategoriesController@destroy');
+        $router->put('/{category}','CategoriesController@update');
+    });
+     
  
  });

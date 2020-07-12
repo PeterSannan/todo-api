@@ -18,7 +18,6 @@ class AuthController extends Controller
      * @return void
      */
 
-
     public function __construct()
     {
         $this->middleware('auth', ['only' => ['logout']]); // we can access logout api only if user is anthenticated
@@ -30,18 +29,12 @@ class AuthController extends Controller
         //validate incoming request 
         $this->loginValidate($request);
 
-        //get the credentials
-        $credentials = $request->only(['email', 'password']);
+        //check the credentials
+        $token = $this->attempt($request->input('email'), $request->input('password'));
 
         //check if username and password are correct, if no format error and send it with status code 401
-        if (!$token = Auth::attempt($credentials)) {
-          return  (new ErrorResource((object)[
-                'title'=>'Unauthorized',
-                'code'=>'401',
-                'details'=>'Email or Password is incorrect'
-            ]))
-            ->response()
-            ->setStatusCode(401);
+        if (!$token) {
+            return $this->sendErrorResponse('Unauthorized', 401, 'Email or Password is incorrect');
         }
 
         // if everything was fine send the user information with token
@@ -56,40 +49,24 @@ class AuthController extends Controller
         $this->registerValidate($request);
 
         try {
-            //create new user, we can use mass assignement but for security reasons better to use this approach
-            $user = new User();
-            $user->firstname = $request->input('firstname');
-            $user->lastname = $request->input('lastname');
-            $user->email = $request->input('email');
+            //hash the password
             $plainPassword = $request->input('password');
-            $user->password = app('hash')->make($plainPassword);
-            $user->gender = $request->input('gender');
-            $user->mobile = $request->input('mobile');
-            $user->birthday = $request->input('birthday');
-            $user->save();
+            $request['password'] = app('hash')->make($plainPassword);
 
+            //create user
+            $user = User::create($request->except('password_confirmation'));
 
-            $credentials = [
-                'email' => $user->email,
-                'password' => $plainPassword
-            ];
-
-            //get token
-            $token = Auth::attempt($credentials);
+            //get the token
+            $token = $this->attempt($user->email, $plainPassword);
 
             //return successful response
             return new UserResource($user, $token);
         } catch (\Exception $e) {
-            //return error message
-            return  (new ErrorResource((object)[
-                'title'=>'Unauthorized',
-                'code'=>'401',
-                'details'=>'User Registration Failed!'
-            ]))
-            ->response()
-            ->setStatusCode(401);
+            //return error message if any error occured
+            return $this->sendErrorResponse('Unauthorized', 401, 'User Registration Failed!');
         }
     }
+
 
 
     public function logout(Request $request)
@@ -98,6 +75,18 @@ class AuthController extends Controller
     }
 
 
+    //check if the email and password are correct
+    public function attempt($email, $password)
+    {
+        $credentials = [
+            'email' => $email,
+            'password' => $password
+        ];
+        $token = Auth::attempt($credentials);
+        return $token;
+    }
+
+    //validation for register
     public function registerValidate($request)
     {
         //validate incoming request 
@@ -112,6 +101,7 @@ class AuthController extends Controller
         ]);
     }
 
+    //validation for login
     public function loginValidate($request)
     {
         //validate incoming request 
