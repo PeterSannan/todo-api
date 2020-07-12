@@ -26,5 +26,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->put('/{category}','CategoriesController@update');
     });
      
- 
+    $router->group(['prefix' => 'tasks'], function () use ($router) { 
+        $router->get('/','TasksController@index'); 
+    });
  });

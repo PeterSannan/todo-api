@@ -22,10 +22,10 @@ class UserResource extends JsonResource
             'type' => 'users',
             'id' => (int)$this->id,
             'attributes' => [
-                'Email' => $this->email,
-                'Gender' => $this->gender,
-                'Birthday' => $this->birthday,
-                'Phone' => $this->mobile,
+                'email' => $this->email,
+                'gender' => $this->gender,
+                'birthday' => $this->birthday,
+                'phone' => $this->mobile,
                 'created_at' => $this->created_at,
             ],
 
