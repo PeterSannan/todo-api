@@ -28,5 +28,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
      
     $router->group(['prefix' => 'tasks'], function () use ($router) { 
         $router->get('/','TasksController@index'); 
+        $router->post('/','TasksController@store'); 
+        $router->delete('/{task}','TasksController@destroy'); 
+        $router->put('/{task}','TasksController@update'); 
     });
  });

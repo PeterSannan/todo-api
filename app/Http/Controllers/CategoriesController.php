@@ -43,20 +43,17 @@ class CategoriesController extends Controller
 
     //check if user is aauthotized to delete a category if yes deleted or throw a 403 error
     public function destroy(String $category){
-        $category = Category::findOrFail($category);
-        if(Gate::denies('manage-category',$category)){
-            return $this->sendErrorResponse('Forbidden', 403, 'You cannot access this category');
-        }
+        $category = $this->checkCategory($category); 
+        $category ?: exit();
+        
         $category->delete();
     }
 
 
     //check if user is authorized to update a category is yes upated it if no throw a 403 error
     public function update(Request $request,String $category){
-        $category = Category::findOrFail($category);
-        if(Gate::denies('manage-category',$category)){
-            return $this->sendErrorResponse('Forbidden', 403, 'You cannot access this category');
-        }
+        $category = $this->checkCategory($category); 
+        $category ?: exit();
 
         $this->CreateCategoryValidate($request);
         $category_updated = tap($category)->update($request->all()); 
