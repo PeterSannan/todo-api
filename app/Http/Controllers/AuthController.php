@@ -34,7 +34,8 @@ class AuthController extends Controller
 
         //check if username and password are correct, if no format error and send it with status code 401
         if (!$token) {
-            return $this->sendErrorResponse('Unauthorized', 401, 'Email or Password is incorrect');
+             $this->sendErrorResponse('Unauthorized', 401, 'Email or Password is incorrect');
+             return;
         }
 
         // if everything was fine send the user information with token
