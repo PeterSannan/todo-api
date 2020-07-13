@@ -13,20 +13,20 @@ Authentication are required for all the apis except login and register apis.
 List of Apis:
 --------------------------------------------------------------------------------------------------------------
 POST  localhost:8000/api/register
-- Params, all are required (with exemple):
-- firstname:Peter
-- lastname:Sannan
-- gender:M (M or F)
-- birthday:1990-12-20
-- password:secret
-- password_confirmation:secret
-- mobile:78333222
-- email:peter.sannan@gmail.com
+Params, all are required (with exemple):
+firstname:Peter</br>
+lastname:Sannan</br>
+gender:M (M or F)</br>
+birthday:1990-12-20</br>
+password:secret</br>
+password_confirmation:secret</br>
+mobile:78333222</br>
+email:peter.sannan@gmail.com</br>
 
 Success Response:<br/>
 Code: 201<br/>
-<code>
-- "data": {
+```json
+"data": {
         "type": "users",
         "id": 1,
         "attributes": {
@@ -38,21 +38,22 @@ Code: 201<br/>
         },
         "token": this token should be added in the header of all others apis ('Bearer ...')
 }
-</code>
+```
 <br/>
 Error Response: <br/>
 Code: 422 Unprocessable Entity <br/>
-<code> "data": {
+```json
+"data": {
         "errors": {
             "status": "422",
             "title": "Validation Failed",
             "details": "The lastname field is required."
         }
     }
-</code>
+```    
 OR <br/>
-Code: 401 UNAUTHORIZED
-<code>
+Code: 401 UNAUTHORIZED<br/>
+```json
 "data": {
         "errors": {
             "status": "401",
@@ -60,7 +61,7 @@ Code: 401 UNAUTHORIZED
             "details": "User Registration Failed!"
         }
     }
-</code>
+```
 --------------------------------------------------------------------------------------------------------------
 POST  localhost:8000/api/login
 Params, all are required (with exemple):
@@ -69,6 +70,7 @@ password:secret
 
 Success Response:
 Code: 200
+```json
 "data": {
         "type": "users",
         "id": 1,
@@ -81,8 +83,9 @@ Code: 200
         },
         "token": this token should be added in the header of all others apis ('Bearer ...')
     }
-
+```
 Error Response:
+```json
 Code: 422 Unprocessable Entity
     "data": {
         "errors": {
@@ -91,8 +94,10 @@ Code: 422 Unprocessable Entity
             "details": "The email field is required."
         }
     }
+ ```
  OR
 Code: 401 UNAUTHORIZED
+```json
 "data": {
         "errors": {
             "status": 401,
@@ -100,11 +105,13 @@ Code: 401 UNAUTHORIZED
             "details": "Email or Password is incorrect"
         }
     }
+  ```
 --------------------------------------------------------------------------------------------------------------
 
-[!!!!(after that , the token should be added to header for all the requests like this:)]()
+After that , the token should be added to header for all the requests like this: <br/>
+<code>
 Authorization:Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTU5NDU1NzE4MCwiZXhwIjoxNTk0NTYwNzgwLCJuYmYiOjE1OTQ1NTcxODAsImp0aSI6Ik1xTnBZSE1zYVlVQWhoUGMiLCJzdWIiOjEwLCJwcnYiOiI4N2UwYWYxZWY5ZmQxNTgxMmZkZWM5NzE1M2ExNGUwYjA0NzU0NmFhIn0.L-2MF6OyBX3WIB0EvaZHQea4FCEuMx03M6N85Jc_8Q8
-
+</code>
 --------------------------------------------------------------------------------------------------------------
 POST   localhost:8000/api/logout    
 no params.
@@ -117,6 +124,7 @@ GET localhost:8000/api/categories
 no params
 
 Sucess Response:
+```json
 "data": [
         {
             "type": "Categories",
@@ -127,7 +135,7 @@ Sucess Response:
         }
     ]
 
-
+```
 
 --------------------------------------------------------------------------------------------------------------
 POST localhost:8000/api/categories
@@ -135,6 +143,7 @@ params:
 name:category2
 
 Sucess Response:
+```json
 "data": {
         "type": "Categories",
         "id": 2,
@@ -142,6 +151,7 @@ Sucess Response:
             "name": "category2"
         }
     }
+```
 Error Response:
 if name is not available in the body an invalid data will be thrown with status code 422
 
@@ -151,6 +161,7 @@ PUT localhost:8000/api/categories/2 (:id)
 name:category2edit
 
 Sucess Response:
+```json
 "data": {
         "type": "Categories",
         "id": 2,
@@ -158,10 +169,11 @@ Sucess Response:
             "name": "category2edit"
         }
     }
-
+```
  OR
  Error Response:
 Code: 403 Forbidden (if the user authenticated different from user who created this category)
+```json
 "data": {
         "errors": {
             "status": 403,
@@ -169,6 +181,7 @@ Code: 403 Forbidden (if the user authenticated different from user who created t
             "details": "You cannot access this category"
         }
 }
+```
 OR
 if name is not available in the body an invalid data will be thrown with status code 422
 
@@ -181,6 +194,7 @@ Code: 200
 OR
  Error Response:
 Code: 403 Forbidden (if the user authenticated different from user who created this category)
+```json
 "data": {
         "errors": {
             "status": 403,
@@ -188,7 +202,7 @@ Code: 403 Forbidden (if the user authenticated different from user who created t
             "details": "You cannot access this category"
         }
 }
-
+```
 --------------------------------------------------------------------------------------------------------------
 
 GET localhost:8000/api/tasks
@@ -201,6 +215,7 @@ by status localhost:8000/api/tasks?status=1 (1:Completed, 2:Snoozed, 3:Overdue)
 
 Success Response:
 Code: 200
+```json
 "data": [
         {
             "type": "tasks",
@@ -237,9 +252,11 @@ Code: 200
             }
         },
     ]
+  ```
 OR
  Error Response:
 Code: 422  (if the value provided for filters are invalid)
+```json
 "data": {
         "errors": {
             "status": 422,
@@ -247,7 +264,7 @@ Code: 422  (if the value provided for filters are invalid)
             "details": "The given data is invalid"
         }
 }
-
+```
 --------------------------------------------------------------------------------------------------------------
 
 POST  localhost:8000/api/tasks
@@ -260,6 +277,7 @@ category_id:5
 
 Success Response:
 Code: 200
+```json
 "data": {
         "type": "tasks",
         "id": 13,
@@ -277,21 +295,24 @@ Code: 200
             }
         }
     }
-
+```
 OR
 Error Response:
 Code: 422 Unprocessable Entity (if any parameters are invalid)
-    "data": {
+   ```json
+   "data": {
         "errors": {
             "status": "422",
             "title": "Validation Failed",
             "details": "The name field is required."
         }
     }
+  ```
  OR
 
  Error Response:
 Code: 403 Forbidden (if the user authenticated different from user who created this category)
+```json
 "data": {
         "errors": {
             "status": 403,
@@ -299,7 +320,7 @@ Code: 403 Forbidden (if the user authenticated different from user who created t
             "details": "You cannot access this category"
         }
 }
-
+```
 --------------------------------------------------------------------------------------------------------------
 
 PUT  localhost:8000/api/tasks/7
@@ -309,6 +330,7 @@ description:task_update
 
 Success Response:
 Code: 200
+```json
 "data": {
         "type": "tasks",
         "id": 7,
@@ -326,9 +348,10 @@ Code: 200
             }
         }
     }
-
+```
 
 Error Response:(if the user authenticated different from user who created this task)
+```json
 "data": {
         "errors": {
             "status": 403,
@@ -336,9 +359,10 @@ Error Response:(if the user authenticated different from user who created this t
             "details": "You cannot access this task"
         }
     }
-
+```
 Or
 Code: 422 Unprocessable Entity (if any parameters are invalid)
+    ```json
     "data": {
         "errors": {
             "status": "422",
@@ -346,10 +370,12 @@ Code: 422 Unprocessable Entity (if any parameters are invalid)
             "details": "The name field is required."
         }
     }
+    ```
  OR
 
 
 Code: 403 Forbidden (if the user authenticated different from user who created this category)
+```json
 "data": {
         "errors": {
             "status": 403,
@@ -357,7 +383,7 @@ Code: 403 Forbidden (if the user authenticated different from user who created t
             "details": "You cannot access this category"
         }
 }
-
+```
 
 --------------------------------------------------------------------------------------------------------------
 
@@ -370,6 +396,7 @@ Code: 200
 OR
  Error Response:
 Code: 403 Forbidden (if the user authenticated different from user who created this task)
+```json
 "data": {
         "errors": {
             "status": 403,
@@ -377,3 +404,4 @@ Code: 403 Forbidden (if the user authenticated different from user who created t
             "details": "You cannot access this task"
         }
 }
+```json
