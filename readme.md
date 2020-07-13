@@ -13,19 +13,20 @@ Authentication are required for all the apis except login and register apis.
 List of Apis:
 --------------------------------------------------------------------------------------------------------------
 POST  localhost:8000/api/register
-Params, all are required (with exemple):
-firstname:Peter
-lastname:Sannan
-gender:M (M or F)
-birthday:1990-12-20
-password:secret
-password_confirmation:secret
-mobile:78333222
-email:peter.sannan@gmail.com
+- Params, all are required (with exemple):
+- firstname:Peter
+- lastname:Sannan
+- gender:M (M or F)
+- birthday:1990-12-20
+- password:secret
+- password_confirmation:secret
+- mobile:78333222
+- email:peter.sannan@gmail.com
 
-Success Response:
-Code: 201
-"data": {
+Success Response:<br/>
+Code: 201<br/>
+<code>
+- "data": {
         "type": "users",
         "id": 1,
         "attributes": {
@@ -37,19 +38,21 @@ Code: 201
         },
         "token": this token should be added in the header of all others apis ('Bearer ...')
 }
-
-
-Error Response:
-Code: 422 Unprocessable Entity
-"data": {
+</code>
+<br/>
+Error Response: <br/>
+Code: 422 Unprocessable Entity <br/>
+<code> "data": {
         "errors": {
             "status": "422",
             "title": "Validation Failed",
             "details": "The lastname field is required."
         }
     }
-OR
+</code>
+OR <br/>
 Code: 401 UNAUTHORIZED
+<code>
 "data": {
         "errors": {
             "status": "401",
@@ -57,7 +60,7 @@ Code: 401 UNAUTHORIZED
             "details": "User Registration Failed!"
         }
     }
-
+</code>
 --------------------------------------------------------------------------------------------------------------
 POST  localhost:8000/api/login
 Params, all are required (with exemple):
